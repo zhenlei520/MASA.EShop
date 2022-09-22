@@ -4,9 +4,7 @@ public class IntegrationEventService : ServiceBase
 {
     private const string DAPR_PUBSUB_NAME = "pubsub";
 
-    public IntegrationEventService(
-        IServiceCollection services)
-        : base(services)
+    public IntegrationEventService()
     {
         App.MapPost("/api/v1/payment/OrderStatusChangedToValidated", OrderStatusChangedToValidatedAsync);
     }

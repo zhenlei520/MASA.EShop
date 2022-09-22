@@ -2,7 +2,7 @@
 
 namespace Masa.EShop.Services.Ordering.Domain.Repositories;
 
-public interface IOrderRepository
+public interface IOrderRepository : IScopedDependency
 {
     Task<Order> GetOrderByIdAsync(Guid orderId);
     Task<Order?> GetOrderByOrderNumberAsync(int orderNumber);

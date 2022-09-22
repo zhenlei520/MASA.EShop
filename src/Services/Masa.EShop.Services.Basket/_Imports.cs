@@ -1,6 +1,5 @@
 ﻿global using Dapr;
 global using Dapr.Client;
-global using Masa.Contrib.Service.MinimalAPIs;
 global using Masa.EShop.Contracts.Basket;
 global using Masa.EShop.Contracts.Basket.Model;
 global using Masa.EShop.Contracts.Basket.Model.BFF;

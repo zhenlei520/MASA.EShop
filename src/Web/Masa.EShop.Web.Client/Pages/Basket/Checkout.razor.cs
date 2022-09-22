@@ -1,6 +1,4 @@
-﻿using Masa.Blazor;
-
-namespace Masa.EShop.Web.Client.Pages.Basket;
+﻿namespace Masa.EShop.Web.Client.Pages.Basket;
 
 public partial class Checkout : ComponentBase
 {

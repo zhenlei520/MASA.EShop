@@ -1,11 +1,7 @@
 var builder = WebApplication.CreateBuilder(args);
 
 var app = builder.Services
-    .AddFluentValidation(options =>
-    {
-        options.RegisterValidatorsFromAssemblyContaining<CatalogSettings>();
-    })
-    .AddTransient(typeof(IMiddleware<>), typeof(ValidatorMiddleware<>))
+    .AddValidatorsFromAssembly(Assembly.GetEntryAssembly())
     .AddEndpointsApiExplorer()
     .AddSwaggerGen(options =>
     {
@@ -16,16 +12,16 @@ var app = builder.Services
             Description = "The Catalog Service HTTP API"
         });
     })
-    .AddScoped<ICatalogItemRepository, CatalogItemRepository>()
-    .AddScoped<ICatalogTypeRepository, CatalogTypeRepository>()
-    .AddScoped<ICatalogBrandRepository, CatalogBrandRepository>()
-    .AddDaprEventBus<IntegrationEventLogService>(options =>
+    .AddIntegrationEventBus(options =>
     {
-        options.UseEventLog<CatalogDbContext>()
-               .UseEventBus()
-               .UseUoW<CatalogDbContext>(dbOptions => dbOptions.UseSqlServer("server=masa.eshop.services.eshop.database;uid=sa;pwd=P@ssw0rd;database=catalog"));
+        options
+        .UseDapr()
+        .UseEventLog<CatalogDbContext>()
+        .UseEventBus(eventBuilder => eventBuilder.UseMiddleware(typeof(ValidatorMiddleware<>)))
+        .UseUoW<CatalogDbContext>(dbOptions => dbOptions.UseSqlServer());
     })
-    .AddServices(builder);
+    .AddAutoInject()
+    .AddServices(builder, options => options.DisableAutoMapRoute = true);
 
 app.MigrateDbContext<CatalogDbContext>((context, services) =>
 {

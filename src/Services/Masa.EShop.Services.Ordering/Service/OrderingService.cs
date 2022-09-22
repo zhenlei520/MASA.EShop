@@ -2,7 +2,7 @@
 
 public class OrderingService : ServiceBase
 {
-    public OrderingService(IServiceCollection services) : base(services)
+    public OrderingService()
     {
         App.MapPut("/api/v1/orders/cancel/{orderNumber:int}", CancelOrderAsync);
         App.MapPut("/api/v1/orders/ship", ShipOrderAsync);

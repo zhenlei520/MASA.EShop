@@ -2,8 +2,7 @@
 
 public class CatalogService : ServiceBase
 {
-    public CatalogService(IServiceCollection services)
-        : base(services)
+    public CatalogService()
     {
         App.MapGet("/api/v1/catalog/{id}", GetAsync);
         App.MapGet("/api/v1/catalog/items", GetItemsAsync);

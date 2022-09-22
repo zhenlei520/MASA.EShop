@@ -5,11 +5,10 @@ public class OrderEventService : ServiceBase
     private const string DaprPubSubName = "pubsub";
 
     private readonly ILogger<OrderEventService> _logger;
-    public OrderEventService(
-        IServiceCollection services,
-        ILogger<OrderEventService> logger) : base(services)
+
+    public OrderEventService(ILogger<OrderEventService> logger)
     {
-        ArgumentNullException.ThrowIfNull(logger,nameof(logger));
+        ArgumentNullException.ThrowIfNull(logger, nameof(logger));
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
         App.MapPost("/api/v1/orders/paymentsucceeded", OrderPaymentSucceeded);

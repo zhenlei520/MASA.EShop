@@ -7,10 +7,7 @@ public class BasketService : ServiceBase
     private readonly ILogger<BasketService> _logger;
     private readonly DaprClient _daprClient;
 
-    public BasketService(
-        IServiceCollection services,
-        ILogger<BasketService> logger,
-        DaprClient daprClient) : base(services)
+    public BasketService(ILogger<BasketService> logger, DaprClient daprClient)
     {
         _logger = logger;
         _daprClient = daprClient;

@@ -1,5 +1,3 @@
-using Masa.Utils.Caller.Core;
-
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.Configure<Settings>(builder.Configuration);

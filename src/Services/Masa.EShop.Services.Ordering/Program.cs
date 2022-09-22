@@ -18,6 +18,7 @@ builder.Services.AddSignalR().AddHubOptions<NotificationsHub>(options =>
     options.EnableDetailedErrors = true;
 });
 
+
 var app = builder.Services
     .AddEndpointsApiExplorer()
     .AddSwaggerGen(options =>
@@ -29,15 +30,15 @@ var app = builder.Services
             Description = "The Ordering Service HTTP API"
         });
     })
-    .AddMasaDbContext<OrderingContext>(dbOptions => dbOptions.UseSqlServer("Data Source=masa.eshop.services.eshop.database;uid=sa;pwd=P@ssw0rd;database=order"))
-    .AddScoped<IOrderRepository, OrderRepository>()
-    .AddDaprEventBus<IntegrationEventLogService>(options => options.UseEventBus().UseEventLog<OrderingContext>())
-    .AddResponseCompression(opts => //添加压缩中间件服务
+    .AddMasaDbContext<OrderingContext>(dbOptions => dbOptions.UseSqlServer())
+    .AddIntegrationEventBus(options => options.UseDapr().UseEventLog<OrderingContext>().UseEventBus())
+    .AddAutoInject()
+    .AddResponseCompression(opts =>
     {
         opts.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
             new[] { "application/octet-stream" });
     })
-    .AddServices(builder);
+    .AddServices(builder, options => options.DisableAutoMapRoute = true);
 
 app.UseResponseCompression();
 

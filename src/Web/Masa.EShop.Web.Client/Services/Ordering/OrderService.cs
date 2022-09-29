@@ -25,12 +25,12 @@ public class OrderService : HttpClientCallerBase
 
     public async Task<List<OrderSummary>> GetMyOrders(string userId)
     {
-        return await CallerProvider.GetAsync<List<OrderSummary>>($"{getOrdersUrl}?userId={userId}") ?? new List<OrderSummary>();
+        return await Caller.GetAsync<List<OrderSummary>>($"{getOrdersUrl}?userId={userId}") ?? new List<OrderSummary>();
     }
 
     public async Task<Order?> GetOrder(string userId, int orderNumber)
     {
-        return await CallerProvider.GetAsync<Order>($"{prefix}{userId}/{orderNumber}") ?? new Order();
+        return await Caller.GetAsync<Order>($"{prefix}{userId}/{orderNumber}") ?? new Order();
     }
 
     public async Task ShipOrder(int orderNumber)
@@ -45,13 +45,13 @@ public class OrderService : HttpClientCallerBase
             new KeyValuePair<string, string>("orderNumber",orderNumber.ToString())
         });
 
-        var response = await CallerProvider.PutAsync(shipOrderUrl, stringContent);
+        var response = await Caller.PutAsync(shipOrderUrl, stringContent);
         response.EnsureSuccessStatusCode();
     }
 
     public async Task CancelOrder(int orderNumber)
     {
-        var response = await CallerProvider.PutAsync($"{cancelOrderUrl}/{orderNumber}", null);
+        var response = await Caller.PutAsync($"{cancelOrderUrl}/{orderNumber}", null);
         response.EnsureSuccessStatusCode();
     }
 

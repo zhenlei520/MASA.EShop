@@ -26,3 +26,15 @@ public class IntegrationEventService : ServiceBase
             });
     }
 }
+public class DemoService : ServiceBase
+{
+    public DemoService(IServiceCollection services) : base(services)
+    {
+        App.MapGet("/api/v1/demo/username", GetUserName);
+    }
+
+    public string GetUserName()
+    {
+        return "Tony";
+    }
+}

@@ -13,7 +13,7 @@ var app = builder.Services
         });
     })
     .AddScoped<IBasketRepository, BasketRepository>()
-    .AddServices(builder);
+    .AddServices(builder, options => options.DisableAutoMapRoute = true);
 
 app.UseRouting();
 app.UseCloudEvents();

@@ -1,12 +1,7 @@
-
-
 var builder = WebApplication.CreateBuilder(args);
 
 var app = builder.Services
-    .AddFluentValidation(options =>
-    {
-        options.RegisterValidatorsFromAssemblyContaining<Program>();
-    })
+    .AddValidatorsFromAssembly(Assembly.GetEntryAssembly())
     .AddEndpointsApiExplorer()
     .AddSwaggerGen(options =>
     {
@@ -21,10 +16,10 @@ var app = builder.Services
     {
         options.UseIntegrationEventBus(dispatcherOptions => dispatcherOptions.UseDapr().UseEventLog<PaymentDbContext>())
                .UseEventBus(eventBuilder => eventBuilder.UseMiddleware(typeof(ValidatorMiddleware<>)))
-               .UseUoW<PaymentDbContext>(dbOptions => dbOptions.UseSqlServer("server=masa.eshop.services.eshop.database;uid=sa;pwd=P@ssw0rd;database=payment"))
+               .UseUoW<PaymentDbContext>(dbOptions => dbOptions.UseSqlServer())
                .UseRepository<PaymentDbContext>();
     })
-    .AddServices(builder);
+    .AddServices(builder, options => options.DisableAutoMapRoute = true);
 
 app.MigrateDbContext<PaymentDbContext>((context, services) =>
 {

@@ -1,11 +1,11 @@
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddMasaBlazor(new Masa.Blazor.MasaBlazorOptions()
+builder.Services.AddMasaBlazor(options =>
 {
-    Theme = new ThemeOptions()
+    options.ConfigureTheme(theme =>
     {
-        Primary = "#7367f0"
-    }
+        theme.Themes.Light.Primary = "#7367f0";
+    });
 }).AddI18nForServer("Resources");
 
 //Add services to the container.

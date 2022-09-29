@@ -1,4 +1,5 @@
 ﻿using Masa.Blazor;
+using Masa.EShop.Web.Client.Services.Ordering.ViewModel;
 
 namespace Masa.EShop.Web.Client.Pages.Basket;
 
@@ -7,6 +8,7 @@ public partial class Checkout : ComponentBase
     private bool _valid = true;
     private MForm _form = default!;
     private ShipAddressViewModel _shipAddressViewModel = new(), _shipAddressFormModel = new();
+
     [Inject]
     private BasketService BaksetService { get; set; } = default!;
 
@@ -74,7 +76,7 @@ public partial class Checkout : ComponentBase
 
     private async Task SubmitOrder()
     {
-        await _form.ValidateAsync();
+        _form.Validate();
         if (_valid)
         {
             await BasketCheckout(_shipAddressFormModel);
@@ -91,15 +93,15 @@ public partial class Checkout : ComponentBase
         try
         {
             var basketCheckout = new BasketCheckout(
-                                    model.Street,
-                                    model.City,
-                                    model.State,
-                                    model.Country,
-                                    model.ZipCode,
-                                    model.CardNumber,
-                                    model.CardHolderName,
-                                    CardExpirationDate.Parse(model.CardExpiration),
-                                    model.CardSecurityCode, 1, model.Buyer, Guid.NewGuid());
+                model.Street,
+                model.City,
+                model.State,
+                model.Country,
+                model.ZipCode,
+                model.CardNumber,
+                model.CardHolderName,
+                CardExpirationDate.Parse(model.CardExpiration),
+                model.CardSecurityCode, 1, model.Buyer, Guid.NewGuid());
 
             await BaksetService.CheckoutAsync(basketCheckout);
             await StepChanged.InvokeAsync(2);
@@ -111,4 +113,3 @@ public partial class Checkout : ComponentBase
         }
     }
 }
-
